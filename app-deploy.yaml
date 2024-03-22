@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: phpcrudapp
-        image: aymenzarour/phpcrudapp:18
+        image: aymenzarour/phpcrudapp:19
         resources:
           requests:
             memory: "128Mi"
