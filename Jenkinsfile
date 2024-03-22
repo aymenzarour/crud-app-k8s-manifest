@@ -28,12 +28,12 @@ pipeline {
                         sh "git config user.email aymen.zarour99@gmail.com"
                         sh "git config user.name aymenzarour"
                         //sh "git switch master"
-                        sh "cat k8s-manifests/app-deploy.yaml"
-                        sh "sed -i 's+aymenzarour/phpcrudapp.*+aymenzarour/phpcrudapp:${DOCKERTAG}+g' k8s-manifests/app-deploy.yaml"
+                        sh "cat app-deploy.yaml"
+                        sh "sed -i 's+aymenzarour/phpcrudapp.*+aymenzarour/phpcrudapp:${DOCKERTAG}+g' app-deploy.yaml"
                         sh "cat k8s-manifests/app-deploy.yaml"
                         sh "git add ."
                         sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/php-app-ci-cd.git HEAD:main"
+                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/crud-app-k8s-manifest.git HEAD:main"
                     }
                 }
             }
