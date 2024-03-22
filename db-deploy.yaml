@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqldb-d
+  namespace: phpcrudapp
+  labels:
+    app: mysqldb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysqldb
+  template:
+    metadata:
+      labels:
+        app: mysqldb
+    spec:
+      volumes:
+          - name: db-cache
+            emptyDir: {}
+      containers:
+      - name: mysqldb
+        image: aymenzarour/mysqldb-mcv
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: db-cache
+        resources:
+          requests:
+            memory: "1000Mi"
+            cpu: "500m"
+          limits:
+            memory: "1500Mi"
+        env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-dev-params
+                key: mysql-db
+          - name: MYSQL_USER
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-dev-params
+                key: mysql-user
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-dev-secret
+                key: mysql-root-pass
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-dev-secret
+                key: mysql-pass
+        ports:
+        - containerPort: 3306
+      - name: adminer
+        image: adminer:4.8.1
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "500Mi"
+        env:
+          - name: ADMINER_DEFAULT_SERVER
+            value: mysqldb
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb
+  namespace: phpcrudapp
+spec:
+  selector:
+    app: mysqldb
+  ports:
+    - port: 3306
+      targetPort: 3306
