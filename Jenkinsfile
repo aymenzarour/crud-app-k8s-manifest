@@ -30,7 +30,7 @@ pipeline {
                         //sh "git switch master"
                         sh "cat app-deploy.yaml"
                         sh "sed -i 's+aymenzarour/phpcrudapp.*+aymenzarour/phpcrudapp:${DOCKERTAG}+g' app-deploy.yaml"
-                        sh "cat k8s-manifests/app-deploy.yaml"
+                        sh "cat app-deploy.yaml"
                         sh "git add ."
                         sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
                         sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/crud-app-k8s-manifest.git HEAD:main"
