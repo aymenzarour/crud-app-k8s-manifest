@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer
+  namespace: phpcrudapp
+spec:
+  type: NodePort
+  selector:
+    app: mysqldb
+  ports:
+    - port: 8010
+      targetPort: 8080
+      nodePort: 30000
