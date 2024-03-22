@@ -1,0 +1,1 @@
+# crud-app-k8s-manifest
